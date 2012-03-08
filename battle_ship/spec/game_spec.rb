@@ -1,7 +1,7 @@
 require "rspec"
 require_relative "../game"
-describe Game do
 
+describe Game do
 
   let(:game) { Game.new(3, 3) }
 
@@ -13,11 +13,16 @@ describe Game do
     game.should respond_to(:player_two)
   end
 
-  describe "#start" do
-    before(:each)  { game.start }
+  describe "#setup" do
+    #before(:each)  { game.setup }
 
-    it "should setup players and boards" do
-     # game.player
-    end
+    #it "should setup players and boards" do
+    #  game
+    #end
+  end
+
+  describe "#start" do
+
+
   end
 end

@@ -1,26 +1,29 @@
 require_relative "ship"
 
-module BattleShip
-  class BattleField
-    attr_accessor :rows, :cols, :warzone
+class BattleField
+  attr_accessor :rows, :cols, :warzone, :ships
 
-    def initialize(rows, cols)
-      @rows = rows
-      @cols = cols
-      @warzone =  prepare_field
-    end
+  def initialize(rows, cols)
+    @rows = rows
+    @cols = cols
+    @warzone =  prepare_field
+    @ships = []
+  end
 
-    def prepare_field
-      Array.new(@rows) { Array.new(@cols) { "x" } }
-    end
+  def prepare_field
+    Array.new(@rows) { Array.new(@cols) { "-" } }
+  end
 
-    def deploy_ship(ship, x, y, direction = "horizontal")
+  def deploy_ship(ship, x, y, direction = :h)
+    begin
       if (x>=0 && x < rows - 1) && (y >= 0 && y < cols-1)
-        Ship.new(self, ship, x, y, direction)
+        @ships << Ship.new(self, ship, x, y, direction)
+      else
+        raise "Given co-ordinates are out of bound"
       end
+    rescue Exception => e
+      puts e.message
     end
-
-    private
   end
 end
 
