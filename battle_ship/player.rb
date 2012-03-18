@@ -1,13 +1,13 @@
-require_relative "battleship"
 require_relative "battle_field"
 
 class Player
-  include Battleship
-  attr_accessor :name, :battle_field
+  attr_accessor :name, :battle_field, :shots
+  SHIPS = [:aircraft_carrier, :destroyer, :cruiser, :submarine, :battleship]
 
   def initialize(name, field)
     @name = name
     @battle_field = field
+    @shots = []
   end
 
   def display_field
@@ -15,10 +15,11 @@ class Player
   end
 
   def position_ships
+    ####TODO need to check validity of inputs
     SHIPS.each do |ship|
       puts "Enter co-ordinates for the #{ship.to_s.upcase}:"
       x, y = get_coordinates
-      puts "Enter Ship's orientation 'horizontal' or 'vertical' :"
+      puts "Enter Ship's orientation horizontal/vertical :"
       direction = gets.chomp.to_sym
       battle_field.deploy_ship(ship, x, y, direction)
     end
@@ -26,14 +27,20 @@ class Player
   end
 
   def attack(player, x, y)
+    hit = false
     player.battle_field.ships.each do |ship|
       if ship.hit?(x, y)
         ship.hit!(x, y)
-        puts "HIT!!!"
-      else
-        puts "MISS!!"
+        shots << [x, y]
+        hit = true
       end
     end
+    puts "HIT !!" if hit
+    puts "MISS !!" if !hit
+  end
+
+  def ships_left
+    battle_field.ship_count.size
   end
 
   def alive?

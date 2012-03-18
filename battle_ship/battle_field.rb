@@ -18,6 +18,7 @@ class BattleField
     begin
       if (x>=0 && x < rows - 1) && (y >= 0 && y < cols-1)
         @ships << Ship.new(self, ship, x, y, direction)
+        ###### need to check ship collision/overlapping
       else
         raise "Given co-ordinates are out of bound"
       end
@@ -25,10 +26,8 @@ class BattleField
       puts e.message
     end
   end
+
+  def ship_count
+    @ships.map {|ship| !ship.sunk?}
+  end
 end
-
-
-#@game = BattleShip::BattleField.new
-#@game.deploy_ship("aircraft_carrier", 3, 3)
-#@game.deploy_ship("battleship", 4, 0)
-#puts @game.display_field

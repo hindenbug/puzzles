@@ -5,8 +5,8 @@ require_relative "../player"
 
 describe Player do
 
-  let(:field)    { BattleField.new(3, 3) }
-  let(:player1)  { Player.new("Manoj", field ) }
+  let(:field)    { BattleField.new(10, 10) }
+  let(:player)  { Player.new("Manoj", field ) }
 
   describe "#new" do
     it "should create a new player" do
@@ -28,21 +28,40 @@ describe Player do
   describe "#display_field" do
     it "should display the player board" do
       result = player.display_field
-      expected = "- - -\n- - -\n- - -"
+      expected = (("- " * 10).strip + "\n") * 10
       result.should === expected
     end
   end
 
   describe "#position_ships" do
     it "should position ships for a player" do
-      #ships = [:aircraft_carrier, :battleship, :cruiser, :submarine, :destroyer]
+      #ships = [:submarine, :destroyer]
       player.position_ships
       player.battle_field.ships.should eql field.ships
     end
   end
 
   describe "#attack" do
+    before :each do
+      @player2 = Player.new("MK", BattleField.new(10, 10))
+      @player2.battle_field.deploy_ship(:cruiser, 4, 4)
+    end
 
+    context "when ship is present on the given co-ordinates" do
+      it "the attack should be a HIT!!" do
+        @player2.battle_field.warzone[4][5].should == "C"
+        player.attack(@player2, 4, 5)
+        @player2.battle_field.warzone[4][5].should == "*"
+      end
+    end
+
+    context "when ship is not present on the given co-ordinates" do
+      it "the attack should be a MISS" do
+        @player2.battle_field.warzone[4][5].should == "C"
+        player.attack(@player2, 4, 8)
+        @player2.battle_field.warzone[4][5].should == "C"
+      end
+    end
   end
 
 end

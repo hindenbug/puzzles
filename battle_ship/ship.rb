@@ -1,4 +1,5 @@
  class Ship
+
   attr_accessor :ship_type, :x, :y, :warzone, :direction, :hits
   SHIP_SIZE = {:aircraft_carrier => 5, :battleship => 4, :cruiser => 3, :submarine => 3, :destroyer => 2}
 
@@ -34,9 +35,9 @@
     when :battleship
       deploy(4, "W")
     when :cruiser
-      deploy(3, "S")
-    when :submarine
       deploy(3, "C")
+    when :submarine
+      deploy(3, "S")
     when :destroyer
       deploy(2, "D")
     else
@@ -46,17 +47,16 @@
 
   def deploy(length, ship_name)
     ### TODO refactor looks ugly ####
-    if direction == :v
+    if direction == :v                   #### vertical positioning
       end_point = x + (length - 1)
       x.upto(end_point) do |i|
         if warzone[i][y] == "-"
           warzone[i][y] = ship_name
         else
           raise "ERROR"
-          false
         end
       end
-    elsif direction == :h
+    elsif direction == :h                #### horizontal positioning
       end_point = y + (length - 1)
       y.upto(end_point) do |i|
         if warzone[x][i] == '-'

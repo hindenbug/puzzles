@@ -1,3 +1,4 @@
-module Battleship
-  SHIPS = [:aircraft_carrier, :battleship, :destroyer, :submarine, :cruiser]
-end
+require_relative "game"
+
+@game = Game.new
+@game.start
